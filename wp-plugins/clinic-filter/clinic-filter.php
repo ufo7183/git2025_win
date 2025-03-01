@@ -1,7 +1,6 @@
-<?php
+<?php 
 /*
 Plugin Name: Clinic Filter
-Description: 使用 ACF 管理診所，自訂文章類型 + AJAX 篩選，電腦版(>700px)置中、手機版(<=700px)兩個下拉一行、搜尋欄一行、列表不併排
 Version: 1.0
 Author: Your Name
 */
@@ -66,193 +65,202 @@ if (!function_exists('clinic_filter_enqueue_scripts')) {
         wp_add_inline_style('clinic-filter-style', '
 /* =========== 全域容器 =========== */
 .myplugin-wrapper {
-  /* 讓它能置中 or 100% 視情況 */
-  width: 100%;
-  margin: 0 auto;
-  box-sizing: border-box;
-  text-align: center; /* 預設標籤置中 */
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 /* 外層 .clinic-filter-container：上方篩選區塊 */
 .myplugin-wrapper .clinic-filter-container {
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
-/* 
-   大螢幕 (>700px)：
-     - 兩個下拉+搜尋欄並排 
-     - 整體可固定1140px寬（或自行調整）
-*/
+/* 大螢幕 (>700px) */
 @media (min-width: 700px) {
-  .myplugin-wrapper .clinic-filter-row {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* 置中 */
-    gap: 10px;
-    width: 680px;  
-    margin: 0 auto; /* 水平置中 */
-  }
+    .myplugin-wrapper .clinic-filter-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 680px;  
+        margin: 0 auto;
+    }
 }
 
-/*
-   小螢幕 (<=700px)：
-     - 兩個下拉在同一行
-     - 搜尋欄自己一行 
-*/
+/* 小螢幕 (<=700px) */
 @media (max-width: 700px) {
-  .myplugin-wrapper .clinic-filter-row {
-    width: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap; /* 容許換行 */
-    gap: 10px;
-    justify-content: center;
-  }
+    .myplugin-wrapper .clinic-filter-row {
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
 }
 
 /* ========== 下拉選單樣式 ========== */
 .myplugin-wrapper .clinic-filter-field select {
-  display: block;
-  font-size: 16px;
-  line-height: 25.6px;
-  padding: 5px 35px 5px 10px;
-  border: none !important;
-  border-radius: 8px;
-  background-color: #fff;
-  box-sizing: border-box;
-  width: 100%;
+    display: block;
+    font-size: 16px;
+    line-height: 25.6px;
+    padding: 5px 35px 5px 10px;
+    border: none !important;
+    border-radius: 8px;
+    background-color: #fff;
+    box-sizing: border-box;
+    width: 100%;
 }
 
-/* 大螢幕：讓 city & area 合計跟搜尋欄位並排 */
+/* 大螢幕 */
 @media (min-width: 700px) {
-  .myplugin-wrapper .city, .myplugin-wrapper .area {
-    width: 200px; /* 兩個下拉分別200px寬，可自行調 */
-  }
+    .myplugin-wrapper .city, .myplugin-wrapper .area {
+        width: 200px;
+    }
 }
 
-/* 小螢幕：兩個下拉在同一行 => 各50% */
+/* 小螢幕 */
 @media (max-width: 700px) {
-  .myplugin-wrapper .city, .myplugin-wrapper .area {
-    width: calc(50% - 10px); /* gap=10px, 左右各5px */
-  }
+    .myplugin-wrapper .city, .myplugin-wrapper .area {
+        width: calc(50% - 10px);
+    }
 }
 
 /* ========== 搜尋區塊(搜尋欄+按鈕) ========== */
 .myplugin-wrapper .search-box {
-  width: 100%; /* 小螢幕一行佔滿 */
+    width: 100%;
 }
 @media (min-width: 700px) {
-  .myplugin-wrapper .search-box {
-    flex: 1; /* 大螢幕撐剩餘空間 */
-    max-width: 400px; /* 也可自行定義，讓兩下拉+搜尋合計1140 */
-  }
+    .myplugin-wrapper .search-box {
+        flex: 1;
+        max-width: 400px;
+    }
 }
 
 /* 膠囊 */
 .myplugin-wrapper .ser-box {
-  display: inline-flex;
-  align-items: center;
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 40px;
-  overflow: hidden;
-  background: #fff;
-  box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 40px;
+    overflow: hidden;
+    background: #fff;
+    box-sizing: border-box;
 }
 
 /* 放大鏡圖示 */
 .myplugin-wrapper .search-icon {
-  font-size: 18px;
-  color: #666;
-  margin-left: 10px;
-  margin-right: 8px;
+    font-size: 18px;
+    color: #666;
+    margin-left: 10px;
+    margin-right: 8px;
 }
 
 /* 搜尋輸入 */
 .myplugin-wrapper .ser-box input[type="text"] {
-  border: none;
-  outline: none;
-  flex: 1;
-  font-size: 16px;
-  line-height: 25.6px;
-  background: transparent;
-  padding: 5px 10px;
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 16px;
+    line-height: 25.6px;
+    background: transparent;
+    padding: 5px 10px;
 }
 
 /* 按鈕 */
 .myplugin-wrapper .ser-box .button {
-  background: #033473;
-  color: #fff;
-  border: none;
-  padding: 8px 25px;
-  font-size: 18px;
-  line-height: 28.8px;
-  border-radius: 40px;
-  cursor: pointer;
-  white-space: nowrap;
-  z-index: 10;
-
+    background: #033473;
+    color: #fff;
+    border: none;
+    padding: 8px 25px;
+    font-size: 18px;
+    line-height: 28.8px;
+    border-radius: 40px;
+    cursor: pointer;
+    white-space: nowrap;
+    z-index: 10;
 }
 
 /* =========== 列表區 =========== */
 .myplugin-wrapper .clinic-list-container {
-  width: 1140px;    /* 電腦版寬1140 */
-  max-width: 100%;  /* 手機版滿版 */
-  margin: 0 auto;   /* 置中 */
-  text-align: left; /* 內容置左 */
+    width: 1140px;
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.myplugin-wrapper .clinic-initial-message {
+    color: #033473;
+    font-size: 20px;
+    padding: 20px;
 }
 
 .myplugin-wrapper .clinic-item {
-  display: flex; 
-  flex-wrap: wrap; 
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #e5e5e5;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
 }
 
-/* 小螢幕：診所列表不要併排 => 改每則100% */
 @media (max-width: 700px) {
-  .myplugin-wrapper .clinic-item {
-    display: block; /* 每則獨立佔一行 */
-  }
+    .myplugin-wrapper .clinic-item {
+        display: block;
+    }
 }
 
 .myplugin-wrapper .clinic-title {
-  flex: 0 0 40%;
-  font-size: 18px;
-  line-height: 28.8px;
-  transition: color 0.3s;
-  margin-bottom:0;
+    flex: 0 0 40%;
+    font-size: 18px;
+    line-height: 28.8px;
+    transition: color 0.3s;
+    margin-bottom:0;
 }
 .myplugin-wrapper .clinic-title a {
-  color: #333;
-  text-decoration: none;
+    color: #333;
+    text-decoration: none;
 }
 .myplugin-wrapper .clinic-title a:hover {
-  color: #1D6579;
+    color: #1D6579;
 }
 .myplugin-wrapper .clinic-address {
-  flex: 0 0 40%;
-  font-size: 18px;
-  line-height: 28.8px;
+    flex: 0 0 40%;
+    font-size: 18px;
+    line-height: 28.8px;
 }
 .myplugin-wrapper .clinic-address a {
-  color: #2b6cb0;
+    color: #2b6cb0;
 }
 .myplugin-wrapper .clinic-phone a {
-  color: #2b6cb0;
+    color: #2b6cb0;
 }
 .myplugin-wrapper .clinic-phone {
-  flex: 0 0 20%;
-  font-size: 18px;
-  line-height: 28.8px;
+    flex: 0 0 20%;
+    font-size: 18px;
+    line-height: 28.8px;
 }
 .myplugin-wrapper .no-results {
-  padding: 30px;
-  text-align: center;
-  font-size: 18px;
-  background: #f9f9f9;
-  border-radius: 4px;
+    padding: 30px;
+    text-align: center;
+    font-size: 18px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+.myplugin-wrapper .load-more {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 30px;
+    background: #033473;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.myplugin-wrapper .load-more.hidden {
+    display: none;
 }
         ');
 
@@ -262,7 +270,13 @@ if (!function_exists('clinic_filter_enqueue_scripts')) {
 
         $inline_js = '
         jQuery(document).ready(function($){
-            function filterClinics(city_id, area_id, keyword){
+            var offset = 25;
+            var isLoading = false;
+
+            function filterClinics(city_id, area_id, keyword, append = false){
+                if(isLoading) return;
+                isLoading = true;
+                
                 $.ajax({
                     url: clinicAjax.ajaxurl,
                     method: "POST",
@@ -271,13 +285,34 @@ if (!function_exists('clinic_filter_enqueue_scripts')) {
                         security: clinicAjax.nonce,
                         city_id: city_id,
                         area_id: area_id,
-                        keyword: keyword
+                        keyword: keyword,
+                        offset: append ? offset : 0
                     },
                     beforeSend: function(){
                         $("#clinic-list-container").addClass("loading");
+                        if(!append) $("#clinic-list").html("");
                     },
                     success: function(res){
-                        $("#clinic-list-container").removeClass("loading").html(res);
+                        $("#clinic-list-container").removeClass("loading");
+                        if(res.success) {
+                            if(!append) {
+                                $("#clinic-list-container").html("<div id=\'clinic-list\'></div>");
+                                $("#clinic-list").html(res.data.html);
+                            } else {
+                                $("#clinic-list").append(res.data.html);
+                            }
+                            offset = append ? offset + 25 : 25;
+                            
+                            if(res.data.total > offset) {
+                                $("#load-more").removeClass("hidden");
+                            } else {
+                                $("#load-more").addClass("hidden");
+                            }
+                        } else {
+                            $("#clinic-list-container").html("<div class=\'no-results\'>查無結果</div>");
+                            $("#load-more").addClass("hidden");
+                        }
+                        isLoading = false;
                     }
                 });
             }
@@ -286,12 +321,9 @@ if (!function_exists('clinic_filter_enqueue_scripts')) {
             $("#clinic_city").on("change", function(){
                 var city_id = $(this).val() || "";
                 $("#clinic_area").html("<option value=\'\'>選擇區域</option>").prop("disabled", true);
-
-                // 篩選
                 filterClinics(city_id, "", $("#clinic_keyword").val());
                 if(!city_id) return;
 
-                // 抓子區域
                 $.ajax({
                     url: clinicAjax.ajaxurl,
                     method: "POST",
@@ -323,6 +355,11 @@ if (!function_exists('clinic_filter_enqueue_scripts')) {
                 e.preventDefault();
                 filterClinics($("#clinic_city").val(), $("#clinic_area").val(), $("#clinic_keyword").val());
             });
+
+            // Load More
+            $(document).on("click", "#load-more", function(){
+                filterClinics($("#clinic_city").val(), $("#clinic_area").val(), $("#clinic_keyword").val(), true);
+            });
         });
         ';
         wp_add_inline_script('clinic-filter-script', $inline_js);
@@ -332,7 +369,6 @@ if (!function_exists('clinic_filter_enqueue_scripts')) {
             'nonce'   => wp_create_nonce('clinic_filter_nonce')
         ));
     }
-    // priority=999 -> 在其他外掛後
     add_action('wp_enqueue_scripts', 'clinic_filter_enqueue_scripts', 999);
 }
 
@@ -347,39 +383,36 @@ if (!function_exists('clinic_search_bar_shortcode')) {
         ob_start();
         ?>
 <div class="myplugin-wrapper">
-  <div class="clinic-filter-container">
-    <form id="clinic-filter-form">
-      <div class="clinic-filter-row">
-        <!-- 縣市 -->
-        <div class="clinic-filter-field city">
-          <select id="clinic_city" name="clinic_city">
-            <option value="">選擇縣市</option>
-            <?php if ($cities && !is_wp_error($cities)) : ?>
-              <?php foreach($cities as $city) : ?>
-                <option value="<?php echo esc_attr($city->term_id); ?>">
-                  <?php echo esc_html($city->name); ?>
-                </option>
-              <?php endforeach; ?>
-            <?php endif; ?>
-          </select>
-        </div>
-        <!-- 區域 -->
-        <div class="clinic-filter-field area">
-          <select id="clinic_area" name="clinic_area" disabled>
-            <option value="">選擇區域</option>
-          </select>
-        </div>
-        <!-- 搜尋欄 -->
-        <div class="search-box">
-          <div class="ser-box">
-            <i class="fa fa-search search-icon"></i>
-            <input type="text" id="clinic_keyword" placeholder="搜尋診所名稱" />
-            <button type="submit" id="clinic-filter-submit" class="button">搜尋</button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
+    <div class="clinic-filter-container">
+        <form id="clinic-filter-form">
+            <div class="clinic-filter-row">
+                <div class="clinic-filter-field city">
+                    <select id="clinic_city" name="clinic_city">
+                        <option value="">選擇縣市</option>
+                        <?php if ($cities && !is_wp_error($cities)) : ?>
+                            <?php foreach($cities as $city) : ?>
+                                <option value="<?php echo esc_attr($city->term_id); ?>">
+                                    <?php echo esc_html($city->name); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                <div class="clinic-filter-field area">
+                    <select id="clinic_area" name="clinic_area" disabled>
+                        <option value="">選擇區域</option>
+                    </select>
+                </div>
+                <div class="search-box">
+                    <div class="ser-box">
+                        <i class="fa fa-search search-icon"></i>
+                        <input type="text" id="clinic_keyword" placeholder="搜尋診所名稱" />
+                        <button type="submit" id="clinic-filter-submit" class="button">搜尋</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
         <?php
         return ob_get_clean();
@@ -393,11 +426,10 @@ if (!function_exists('clinic_list_shortcode')) {
         ob_start();
         ?>
 <div class="myplugin-wrapper">
-  <div id="clinic-list-container" class="clinic-list-container">
-    <?php
-    echo clinic_filter_generate_list(); // 預設顯示
-    ?>
-  </div>
+    <div id="clinic-list-container" class="clinic-list-container">
+        <div class="clinic-initial-message">搜尋您附近的認證診所</div>
+    </div>
+    <button id="load-more" class="load-more hidden">載入更多</button>
 </div>
         <?php
         return ob_get_clean();
@@ -407,11 +439,11 @@ if (!function_exists('clinic_list_shortcode')) {
 
 // 6. 產生列表 HTML
 if (!function_exists('clinic_filter_generate_list')) {
-    function clinic_filter_generate_list($city_id = 0, $area_id = 0, $keyword = '', $paged = 1) {
+    function clinic_filter_generate_list($city_id = 0, $area_id = 0, $keyword = '', $offset = 0) {
         $args = array(
             'post_type'      => 'clinic',
-            'posts_per_page' => 10,
-            'paged'          => $paged
+            'posts_per_page' => 25,
+            'offset'         => $offset
         );
 
         $tax_query = array();
@@ -440,20 +472,21 @@ if (!function_exists('clinic_filter_generate_list')) {
             $args['tax_query'] = $tax_query;
         }
 
-        // 關鍵字
         if (!empty($keyword)) {
             $args['s'] = sanitize_text_field($keyword);
         }
 
         $query = new WP_Query($args);
+        $total_query = new WP_Query(array_merge($args, array('posts_per_page' => -1)));
+        $total = $total_query->post_count;
+
         if (!$query->have_posts()) {
-            return "<div class='no-results'>請重新搜尋</div>";
+            return array('success' => false);
         }
 
         ob_start();
         while ($query->have_posts()) {
             $query->the_post();
-            // ACF
             $address      = get_field('clinic_address') ?: '';
             $address_url  = get_field('clinic_address_url') ?: '';
             $phone        = get_field('clinic_phone') ?: '';
@@ -461,7 +494,7 @@ if (!function_exists('clinic_filter_generate_list')) {
             ?>
             <div class="clinic-item">
                 <h3 class="clinic-title">
-                  <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                 </h3>
                 <div class="clinic-address">
                     <?php if($address_url): ?>
@@ -485,21 +518,15 @@ if (!function_exists('clinic_filter_generate_list')) {
             <?php
         }
         wp_reset_postdata();
+        $html = ob_get_clean();
 
-        // 分頁
-        $output = ob_get_clean();
-        $output .= '<div class="clinic-pagination">';
-        $output .= paginate_links(array(
-            'base'      => '%_%',
-            'format'    => '?paged=%#%',
-            'current'   => $paged,
-            'total'     => $query->max_num_pages,
-            'prev_text' => '« 上一頁',
-            'next_text' => '下一頁 »',
-        ));
-        $output .= '</div>';
-
-        return $output;
+        return array(
+            'success' => true,
+            'data' => array(
+                'html' => $html,
+                'total' => $total
+            )
+        );
     }
 }
 
@@ -539,9 +566,15 @@ if (!function_exists('clinic_filter_ajax_search')) {
         $city_id = isset($_POST['city_id']) ? intval($_POST['city_id']) : 0;
         $area_id = isset($_POST['area_id']) ? intval($_POST['area_id']) : 0;
         $keyword = isset($_POST['keyword']) ? sanitize_text_field($_POST['keyword']) : '';
-        $paged   = 1;
+        $offset  = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
 
-        echo clinic_filter_generate_list($city_id, $area_id, $keyword, $paged);
+        $result = clinic_filter_generate_list($city_id, $area_id, $keyword, $offset);
+        
+        if($result['success']) {
+            wp_send_json_success($result['data']);
+        } else {
+            wp_send_json_error();
+        }
         wp_die();
     }
     add_action('wp_ajax_clinic_filter','clinic_filter_ajax_search');
